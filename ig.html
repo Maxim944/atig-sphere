@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>IG — Визуализация Сферы</title>
   <style>
     body {
@@ -19,6 +19,7 @@
       color: #00ffff;
       font-family: sans-serif;
       text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+      z-index: 10;
     }
     canvas {
       display: block;
@@ -27,7 +28,11 @@
 </head>
 <body>
   <div id="label">АТИГ Сфера: IG-01</div>
+
+  <!-- Сначала загружаем Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
+
+  <!-- Потом уже создаём сцену -->
   <script>
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
