@@ -1,32 +1,59 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>ATIG Сфера: IG-01</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
   <style>
-    body { margin: 0; overflow: hidden; background-color: black; }
-    canvas { display: block; }
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: black;
+    }
+    #toggleButton {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      background: #0af2cc;
+      color: black;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 0 10px #0af2cc;
+      z-index: 100;
+    }
+    canvas {
+      display: block;
+    }
   </style>
 </head>
 <body>
+
+<!-- Кнопка будет в будущем управлять видимостью сферы -->
+<button id="toggleButton" onclick="toggleSphere()">Скрыть / Показать</button>
 
 <!-- Подключаем Three.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r148/three.min.js"></script>
 
 <script>
-  // Ждём, пока всё загрузится
+  let scene, camera, renderer, sphere;
+  let visible = true;
+
   window.onload = function() {
     init();
     animate();
   };
 
-  let scene, camera, renderer, sphere;
-
   function init() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(
-      75, window.innerWidth / window.innerHeight, 0.1, 1000
+      75,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
     );
     camera.position.z = 3;
 
@@ -35,7 +62,7 @@
     document.body.appendChild(renderer.domElement);
 
     const geometry = new THREE.SphereGeometry(1, 64, 64);
-    const material = new THREE.MeshStandardMaterial({ color: 0xffcc00 });
+    const material = new THREE.MeshStandardMaterial({ color: 0x00ffff });
     sphere = new THREE.Mesh(geometry, material);
     scene.add(sphere);
 
@@ -43,13 +70,20 @@
     light.position.set(5, 5, 5);
     scene.add(light);
 
-    window.addEventListener('resize', onWindowResize, false);
+    window.addEventListener("resize", onWindowResize);
   }
 
   function animate() {
     requestAnimationFrame(animate);
-    sphere.rotation.y += 0.005;
+    if (sphere && visible) {
+      sphere.rotation.y += 0.005;
+    }
     renderer.render(scene, camera);
+  }
+
+  function toggleSphere() {
+    visible = !visible;
+    sphere.visible = visible;
   }
 
   function onWindowResize() {
